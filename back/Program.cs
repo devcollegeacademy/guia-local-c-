@@ -20,10 +20,12 @@ builder.Services.AddControllers();
 
 var app = builder.Build();
 
-//app.Urls.Add("http://localhost:5074");
+app.MapGet("/", () => "Hello, world!");
 
-// var db = app.Services.CreateScope().ServiceProvider.GetRequiredService<ApplicationDbContext>();
-// db.Database.Migrate();
+app.Urls.Add("http://*:5074");
+
+var db = app.Services.CreateScope().ServiceProvider.GetRequiredService<ApplicationDbContext>();
+db.Database.Migrate();
 
 app.UseCors("AllowAllOrigins");
 
