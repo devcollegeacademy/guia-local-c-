@@ -20,6 +20,11 @@ builder.Services.AddControllers();
 
 var app = builder.Build();
 
+//app.Urls.Add("http://localhost:5074");
+
+// var db = app.Services.CreateScope().ServiceProvider.GetRequiredService<ApplicationDbContext>();
+// db.Database.Migrate();
+
 app.UseCors("AllowAllOrigins");
 
 app.UseSwagger();
@@ -38,14 +43,16 @@ app.Run();
 
 void ConfigureDB(WebApplicationBuilder builder)
 {
-    builder.Services.AddDbContext<ApplicationDbContext>(options => {
+    builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    {
         options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
     });
 }
 
 void ConfigureSwagger(WebApplicationBuilder builder)
 {
-    builder.Services.AddSwaggerGen(options => {
+    builder.Services.AddSwaggerGen(options =>
+    {
 
         options.SwaggerDoc("v1", new OpenApiInfo
         {
@@ -64,8 +71,10 @@ void ConfigureSwagger(WebApplicationBuilder builder)
 
 void ConfigureCors(WebApplicationBuilder builder)
 {
-    builder.Services.AddCors(options => {
-        options.AddPolicy("AllowAllOrigins", builder => {
+    builder.Services.AddCors(options =>
+    {
+        options.AddPolicy("AllowAllOrigins", builder =>
+        {
             builder.AllowAnyOrigin()
                    .AllowAnyHeader()
                    .AllowAnyMethod();

@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  database:
+    container_name: database_sqlserver
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    restart: always
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=100_SQLServer
+      - MSSQL_PID=Developer
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+    expose:
+      - 1433
+    ports:
+      - 1433:1433
+
+  backend:
+    container_name: backend_csharp
+    image: mcr.microsoft.com/dotnet/sdk:8.0
+    restart: always
+    working_dir: /app
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Developer
+      - ASPNETCORE_HTTP_PORTS=5074
+      - ConnectionStrings__DefaultConnection=Server=localhost;Initial Catalog=guialocal;User ID=sa;Password=100_SQLServer;Connect Timeout=30;Encrypt=True;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False
+      - Google__ApiKey=AIzaSyBIBkZEexyq3td0QPGZHb9B_-s7-wm6y6I
+      - Google__AuthUri=https://accounts.google.com/o/oauth2/v2/auth?scope=email&include_granted_scopes=true&response_type=token&state=state_parameter_passthrough_value&redirect_uri=http://localhost:3001&client_id=975758659668-65l4an4t4tbha9g5bian8dbp85nqspm6.apps.googleusercontent.com
+    volumes:
+      - ./back:/app    
+    expose:
+      - 5074
+    ports:
+      - 5074:5074
+    command: sh -c 'dotnet run'
+    depends_on:
+      - database
+
+  nginx:
+    container_name: nginx_reverse_proxy
+    image: nginx
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - backend
+
+volumes:
+  sqlserver_data:
