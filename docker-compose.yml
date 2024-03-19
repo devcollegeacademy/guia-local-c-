@@ -16,6 +16,18 @@ services:
     ports:
       - 1433:1433
 
+  oracle_database:
+    container_name: oracle_database
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 1521:1521
+    environment:
+      - ORACLE_ALLOW_REMOTE=true
+    volumes:
+      - oracle_data:/u01/app/oracle/data
+
   backend:
     container_name: backend_csharp
     image: mcr.microsoft.com/dotnet/sdk:8.0
@@ -25,11 +37,9 @@ services:
       - ASPNETCORE_URLS=http://*:5074
       - ConnectionStrings__DefaultConnection=Server=database_sqlserver;Initial Catalog=guialocal;User ID=sa;Password=100_SQLServer;Connect Timeout=30;Encrypt=True;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False
       - Google__ApiKey=AIzaSyBIBkZEexyq3td0QPGZHb9B_-s7-wm6y6I
-      - Google__AuthUri=https://accounts.google.com/o/oauth2/v2/auth?scope=email&include_granted_scopes=true&response_type=token&state=state_parameter_passthrough_value&redirect_uri=http://localhost:3001&client_id=975758659668-65l4an4t4tbha9g5bian8dbp85nqspm6.apps.googleusercontent.com    
+      - Google__AuthUri=https://accounts.google.com/o/oauth2/v2/auth?scope=email&include_granted_scopes=true&response_type=token&state=state_parameter_passthrough_value&redirect_uri=http://localhost:4200&client_id=975758659668-65l4an4t4tbha9g5bian8dbp85nqspm6.apps.googleusercontent.com    
     volumes:
       - ./back:/app
-      - /app/obj
-      - /app/bin
     expose:
       - 5074
     ports:
@@ -37,6 +47,22 @@ services:
     command: sh -c 'dotnet restore && dotnet run'
     depends_on:
       - database
+    
+  frontend:
+    container_name: frontend_angular
+    image: node:18
+    restart: always
+    working_dir: /app
+    volumes:
+      - ./front:/app
+    expose:
+      - 4200
+    ports:
+      - 4200:4200
+    command: sh -c 'npm install -g @angular/cli@13 && npm install && ng serve --host 0.0.0.0'
+    depends_on:
+      - backend
+
 
 networks:
   guialoca-net:
@@ -44,3 +70,4 @@ networks:
 
 volumes:
   sqlserver_data:
+  oracle_data:

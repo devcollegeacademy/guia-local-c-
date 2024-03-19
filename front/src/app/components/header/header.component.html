@@ -1,15 +1,16 @@
-<div class="header-styled">
-  <form (submit)="onSubmit($event)">
-    <img class="search-icon-point" src="/images/icons/icon_point.png" alt="" />
-    <input type="text" [(ngModel)]="input" placeholder="O que deseja procurar?" />
-    <button type="submit" class="search-btn">
-      <img class="search-icon-find" src="./images/icons/icon_find.png" alt="" />
-    </button>
-  </form>
+<header>
+    <form class="form_search" (submit)="submitForm($event)" action="">
+        <img class="form_search_img" src="../../../assets/images/icons/icon_point.png" alt="">
+        <input #searchInput class="form_search_input" type="text">
+        <button class="form_search_btn">
+            <img class="form_search_btn_icon" src="../../../assets/images/icons/icon_find.png" alt="">
+        </button>
+    </form>
 
-  <a href='http://localhost:3000/customer/auth' class="btn-login">
-    <button class="login-with-google">
-      {{ customer.email === '' ? 'G' : customer.email }}
-    </button>
-  </a>
-</div>
+    <a href="http://localhost:5074/customer/auth">
+        <button class="btn_login">
+            <p>G</p>
+            <p>Entrar com o Google</p>
+        </button>
+    </a>
+</header>

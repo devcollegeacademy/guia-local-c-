@@ -1,5 +1,5 @@
-.header-styled {
-  width: 100%;
+header {
+  width: 100vw;
   height: 100px;
   display: flex;
   justify-content: space-between;
@@ -8,14 +8,14 @@
   background-color: #44677C;
 }
 
-.search-form {
+.form_search {
   background-color: white;
   border-radius: 10px;
   padding: 0 60px;
   position: relative;
 }
 
-.search-form input {
+.form_search_input {
   all: unset;
   width: 400px;
   height: 60px;
@@ -25,14 +25,14 @@
   font-size: 20px;
 }
 
-.search-icon-point {
+.form_search_img {
   position: absolute;
   left: 20px;
   top: 10px;
   z-index: 1;
 }
 
-.search-btn {
+.form_search_btn {
   all: unset;
   position: absolute;
   right: 30px;
@@ -45,7 +45,7 @@
   cursor: pointer;
 }
 
-.btn-login button {
+.btn_login {
   all: unset;
   color: #FFFFFF;
   padding: 10px 20px;
@@ -61,7 +61,7 @@
   cursor: pointer;
 }
 
-.btn-login button p:first-child {
+.btn_login p:first-child {
   font-size: 30px;
   margin-right: 10px;
   text-decoration: none;
